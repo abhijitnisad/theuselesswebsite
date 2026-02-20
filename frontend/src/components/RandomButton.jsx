@@ -37,7 +37,7 @@ const RandomButton = () => {
       }
     } catch (err) {
       console.error('Error fetching random website:', err);
-      setError('Connection severed. Try again.');
+      setError('Connection failed. Please try again.');
       setIsLoading(false);
       controls.stop();
       controls.set({ scale: 1, opacity: 0.8 });
@@ -73,12 +73,12 @@ const RandomButton = () => {
               className="flex items-center gap-3"
             >
               <Loader2 className="w-6 h-6 animate-spin text-indigo-400" />
-              <span className="tracking-widest uppercase font-black bg-gradient-to-r from-indigo-200 to-white text-transparent bg-clip-text">Teleporting</span>
+              <span className="tracking-widest uppercase font-black bg-gradient-to-r from-indigo-200 to-white text-transparent bg-clip-text">Loading</span>
             </motion.div>
           ) : (
              <motion.div className="flex items-center gap-3">
                <Compass className="w-6 h-6 text-indigo-400 group-hover:rotate-90 group-hover:text-fuchsia-400 transition-all duration-700 ease-out" />
-               <span className="tracking-widest uppercase font-black text-white/90 group-hover:text-white transition-colors drop-shadow-sm">BE AMAZED</span>
+               <span className="tracking-widest uppercase font-black text-white/90 group-hover:text-white transition-colors drop-shadow-sm">SHOW ME A WEBSITE</span>
              </motion.div>
           )}
         </motion.button>

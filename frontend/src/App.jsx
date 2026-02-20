@@ -34,12 +34,12 @@ function App() {
       const res = await addUselessWebsite(newSite);
       if (res.success) {
         setIsError(false);
-        setMessage('Website added to the void!');
+        setMessage('Website added successfully!');
         setNewSite('');
       }
     } catch (error) {
       setIsError(true);
-      setMessage('Failed to add. The internet rejects it.');
+      setMessage('Failed to add website. Please try again.');
     } finally {
       setIsAdding(false);
       setTimeout(() => setMessage(''), 4000);
@@ -114,7 +114,7 @@ function App() {
         <motion.div variants={itemVariants} className="text-center space-y-4">
           <div className="inline-block relative mb-4">
             <h1 className="text-7xl sm:text-8xl font-black tracking-tighter bg-gradient-to-br from-white via-indigo-100 to-indigo-400 text-transparent bg-clip-text drop-shadow-sm pb-2">
-              Lost?
+              Bored?
             </h1>
             <motion.div 
               initial={{ scaleX: 0, opacity: 0 }}
@@ -130,7 +130,7 @@ function App() {
             />
           </div>
           <p className="text-slate-400 text-lg sm:text-xl font-medium max-w-md mx-auto leading-relaxed">
-            Escape the algorithm. Let serendipity guide you to a completely useless corner of the internet.
+            Click the button to visit a random, funny, and completely useless website.
           </p>
         </motion.div>
 
@@ -147,14 +147,14 @@ function App() {
           <div className="w-full bg-[#0a0a0f]/90 backdrop-blur-xl p-8 rounded-3xl h-full shadow-2xl">
             <div className="flex items-center gap-2 mb-6 justify-center">
               <Sparkles className="w-5 h-5 text-indigo-400" />
-              <h3 className="text-lg font-semibold tracking-wide text-white drop-shadow-sm">Contribute to the void</h3>
+              <h3 className="text-lg font-semibold tracking-wide text-white drop-shadow-sm">Add a new website</h3>
             </div>
             
             <form onSubmit={handleAddSubmit} className="flex flex-col gap-4">
               <div className="relative group">
                 <input 
                   type="url" 
-                  placeholder="https://your-useless-discovery.com"
+                  placeholder="https://example.com"
                   className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/10 transition-all text-white placeholder-slate-500 font-medium tracking-wide shadow-inner"
                   value={newSite}
                   onChange={(e) => setNewSite(e.target.value)}
@@ -171,7 +171,7 @@ function App() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-fuchsia-500/20 opacity-0 transition-opacity duration-300"></div>
                 <span className="relative z-10 flex items-center gap-2">
-                  {isAdding ? 'Transmitting...' : (
+                  {isAdding ? 'Adding...' : (
                     <>Add Link <ChevronRight className="w-4 h-4" /></>
                   )}
                 </span>
