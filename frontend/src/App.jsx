@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, CheckCircle, XCircle } from 'lucide-react';
 import RandomButton from './components/RandomButton';
 import { addUselessWebsite } from './services/api';
 
 function App() {
   const [newSite, setNewSite] = useState('');
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
 
   const handleAddSubmit = async (e) => {
@@ -14,69 +17,133 @@ function App() {
     try {
       setIsAdding(true);
       setMessage('');
+      setIsError(false);
       const res = await addUselessWebsite(newSite);
       if (res.success) {
-        setMessage('Website added successfully!');
+        setIsError(false);
+        setMessage('Website added to the void!');
         setNewSite('');
       }
     } catch (error) {
-      setMessage('Failed to add website. Please try again.');
+      setIsError(true);
+      setMessage('Failed to add. The internet rejects it.');
     } finally {
       setIsAdding(false);
-      setTimeout(() => setMessage(''), 3000);
+      setTimeout(() => setMessage(''), 4000);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 -left-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-pulse"></div>
-      <div className="absolute top-0 -right-40 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-pulse" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute -bottom-40 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-pulse" style={{ animationDelay: '4s' }}></div>
+    <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+      
+      {/* Dynamic Grid Background Overlay */}
+      <div className="absolute inset-0 bg-grid-white z-0 pointer-events-none"></div>
 
-      <div className="z-10 w-full max-w-lg flex flex-col items-center gap-12">
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
-            Bored?
-          </h1>
-          <p className="text-slate-300 text-lg md:text-xl font-medium">
-            Let us take you to a random useless corner of the internet.
+      {/* Glowing Ambient Lights - using framer motion to slowly breathe */}
+      <motion.div 
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[150px]"
+      />
+      <motion.div 
+        animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-600 rounded-full mix-blend-screen filter blur-[150px]"
+      />
+
+      <div className="z-10 w-full max-w-xl flex flex-col items-center gap-14 mt-10 mb-16">
+        
+        {/* Header Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center space-y-6"
+        >
+          <div className="inline-block relative">
+            <h1 className="text-6xl sm:text-7xl font-black tracking-tighter bg-gradient-to-br from-white via-slate-200 to-slate-500 text-transparent bg-clip-text drop-shadow-sm">
+              Lost?
+            </h1>
+            <motion.div 
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-fuchsia-500 origin-left rounded-full"
+            />
+          </div>
+          <p className="text-slate-400 text-lg sm:text-xl font-medium max-w-md mx-auto leading-relaxed">
+            Escape the algorithm. Teleport to a completely useless corner of the internet.
           </p>
-        </div>
+        </motion.div>
 
+        {/* Main Action Component */}
         <RandomButton />
 
-        {/* Bonus: Add a website form */}
-        <div className="w-full mt-10 p-6 rounded-2xl glass-effect border border-slate-700/50 shadow-2xl">
-          <h3 className="text-xl font-bold mb-4 text-center text-slate-200">Know a useless website?</h3>
-          <form onSubmit={handleAddSubmit} className="flex flex-col gap-3">
-            <input 
-              type="url" 
-              placeholder="https://example.com"
-              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-slate-400"
-              value={newSite}
-              onChange={(e) => setNewSite(e.target.value)}
-              required
-            />
-            <button 
+        {/* Subtle Form Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          className="w-full mt-8 p-8 rounded-3xl glass-effect"
+        >
+          <div className="flex items-center gap-2 mb-6 justify-center">
+            <Plus className="w-5 h-5 text-indigo-400" />
+            <h3 className="text-lg font-semibold tracking-wide text-slate-200">Contribute to the void</h3>
+          </div>
+          
+          <form onSubmit={handleAddSubmit} className="flex flex-col gap-4">
+            <div className="relative">
+              <input 
+                type="url" 
+                placeholder="https://your-useless-discovery.com"
+                className="w-full pl-5 pr-4 py-4 bg-black/40 border border-slate-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-white placeholder-slate-500 font-medium"
+                value={newSite}
+                onChange={(e) => setNewSite(e.target.value)}
+                required
+              />
+            </div>
+            
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit" 
               disabled={isAdding}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 px-4 rounded-lg transition-colors border border-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full relative overflow-hidden group bg-slate-800 hover:bg-slate-700 text-white font-semibold py-4 px-4 rounded-xl transition-colors border border-slate-700 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
             >
-              {isAdding ? 'Adding...' : 'Add to Database'}
-            </button>
+              <span className="relative z-10">{isAdding ? 'Transmitting...' : 'Add Link'}</span>
+              {!isAdding && (
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-fuchsia-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              )}
+            </motion.button>
           </form>
-          {message && (
-            <p className={`mt-3 text-center text-sm font-medium ${message.includes('successfully') ? 'text-green-400' : 'text-red-400'}`}>
-              {message}
-            </p>
-          )}
-        </div>
+
+          {/* Animated Notification Message */}
+          <div className="h-8 mt-4">
+            <AnimatePresence>
+              {message && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className={`flex items-center justify-center gap-2 text-sm font-semibold ${isError ? 'text-rose-400' : 'text-emerald-400'}`}
+                >
+                  {isError ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
+                  {message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
       
-      <footer className="absolute bottom-6 text-slate-500 text-sm z-10 font-medium">
-        Made with ❤️ using the MERN Stack
-      </footer>
+      <motion.footer 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="absolute bottom-6 text-slate-600 text-sm z-10 font-medium tracking-wider"
+      >
+        MERN STACK EXPERIMENT
+      </motion.footer>
     </div>
   );
 }

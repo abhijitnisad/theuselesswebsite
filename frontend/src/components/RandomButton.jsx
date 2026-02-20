@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Compass, Loader2 } from 'lucide-react';
 import { getRandomWebsite } from '../services/api';
 
 const RandomButton = () => {
@@ -9,50 +11,88 @@ const RandomButton = () => {
     try {
       setIsLoading(true);
       setError('');
+      
+      // Artificial delay just so the user can enjoy the sweet interaction animation briefly
+      await new Promise(resolve => setTimeout(resolve, 600)); 
+      
       const data = await getRandomWebsite();
       
       if (data && data.url) {
-        // Redirect the user
-        window.location.href = data.url;
+        // Smoothly fade out the page before redirecting
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+          window.location.href = data.url;
+        }, 500);
       } else {
         throw new Error('No URL returned from server');
       }
     } catch (err) {
       console.error('Error fetching random website:', err);
-      setError('Failed to find a useless website. The internet must be serious today.');
+      setError('Connection severed. Try again.');
       setIsLoading(false);
+      document.body.style.opacity = '1';
     }
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      <button
-        onClick={handleClick}
-        disabled={isLoading}
-        className="group relative px-8 py-5 font-bold text-xl rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-[0_0_40px_-10px_rgba(236,72,153,0.5)] hover:shadow-[0_0_60px_-15px_rgba(236,72,153,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed overflow-hidden w-full max-w-xs"
-      >
-        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-        <span className="relative z-10 flex items-center justify-center gap-2">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="flex flex-col items-center gap-6 w-full"
+    >
+      <div className="relative group w-full max-w-xs cursor-pointer">
+        {/* Dynamic Glow Behind Button */}
+        <motion.div 
+          animate={{ 
+            boxShadow: isLoading 
+              ? '0 0 80px -10px rgba(99, 102, 241, 0.8)' 
+              : '0 0 40px -10px rgba(99, 102, 241, 0.4)' 
+          }}
+          className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500"
+        ></motion.div>
+        
+        {/* Main interactive button */}
+        <motion.button
+          onClick={handleClick}
+          disabled={isLoading}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative w-full px-8 py-5 font-bold text-xl rounded-full bg-slate-950 text-white overflow-hidden flex items-center justify-center gap-3 border border-indigo-500/30 disabled:opacity-90 disabled:cursor-not-allowed z-10"
+        >
+          {/* Shimmer effect overlay */}
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_2s_infinite]"></div>
+          
           {isLoading ? (
-            <>
-              <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Teleporting...
-            </>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="flex items-center gap-3"
+            >
+              <Loader2 className="w-6 h-6 animate-spin text-fuchsia-400" />
+              <span className="tracking-wide bg-gradient-to-r from-indigo-400 to-fuchsia-400 text-transparent bg-clip-text">Teleporting...</span>
+            </motion.div>
           ) : (
-             'TAKE ME ANYWHERE'
+             <>
+               <Compass className="w-6 h-6 text-indigo-400 group-hover:rotate-45 transition-transform duration-500" />
+               <span className="tracking-widest">BE AMAZED</span>
+             </>
           )}
-        </span>
-      </button>
+        </motion.button>
+      </div>
       
+      {/* Error state */}
       {error && (
-        <p className="text-red-400 font-medium text-center px-4 py-2 bg-red-400/10 rounded-lg border border-red-400/20">
+        <motion.p 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-rose-400 font-medium text-sm tracking-wide px-5 py-2.5 bg-rose-500/10 rounded-full border border-rose-500/20 shadow-lg"
+        >
           {error}
-        </p>
+        </motion.p>
       )}
-    </div>
+    </motion.div>
   );
 };
 
