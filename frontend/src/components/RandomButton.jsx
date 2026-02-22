@@ -39,9 +39,26 @@ const RandomButton = () => {
       
       await new Promise(resolve => setTimeout(resolve, 800)); 
       
-      const data = await getRandomWebsite();
+      // Retrieve visited URLs from current session
+      let visitedUrls = [];
+      try {
+        const stored = sessionStorage.getItem('visitedUrls');
+        if (stored) visitedUrls = JSON.parse(stored);
+      } catch (e) {
+        console.error('Error reading visitedUrls', e);
+      }
+      
+      const data = await getRandomWebsite(visitedUrls);
       
       if (data && data.url) {
+        // Manage visited URLs cache
+        if (data.resetCache) {
+          visitedUrls = [data.url]; // Start a new cycle with the returned URL
+        } else {
+          visitedUrls.push(data.url);
+        }
+        sessionStorage.setItem('visitedUrls', JSON.stringify(visitedUrls));
+
         document.body.style.transition = 'all 0.6s cubic-bezier(0.87, 0, 0.13, 1)';
         document.body.style.filter = 'blur(10px) brightness(0)';
         document.body.style.transform = 'scale(1.1)';

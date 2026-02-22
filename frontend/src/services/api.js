@@ -10,9 +10,13 @@ const api = axios.create({
   },
 });
 
-export const getRandomWebsite = async () => {
+export const getRandomWebsite = async (visited = []) => {
   try {
-    const response = await api.get('/random');
+    const response = await api.get('/random', {
+      params: {
+        visited: JSON.stringify(visited)
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('API Error fetching random website:', error);
