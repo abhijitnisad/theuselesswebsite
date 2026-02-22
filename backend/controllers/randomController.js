@@ -36,11 +36,29 @@ const uselessWebsites = [
 // @access  Public
 export const getRandomWebsite = (req, res, next) => {
     try {
-        const randomIndex = Math.floor(Math.random() * uselessWebsites.length);
-        const randomSite = uselessWebsites[randomIndex];
+        let visitedUrls = [];
+        if (req.query.visited) {
+            try {
+                visitedUrls = JSON.parse(req.query.visited);
+            } catch (e) {
+                // Ignore parsing errors
+            }
+        }
+        
+        let availableWebsites = uselessWebsites.filter(site => !visitedUrls.includes(site));
+        let resetCache = false;
+        
+        if (availableWebsites.length === 0) {
+            availableWebsites = uselessWebsites;
+            resetCache = true;
+        }
+
+        const randomIndex = Math.floor(Math.random() * availableWebsites.length);
+        const randomSite = availableWebsites[randomIndex];
         res.status(200).json({
             success: true,
-            url: randomSite
+            url: randomSite,
+            resetCache: resetCache
         });
     } catch (error) {
         next(error);
