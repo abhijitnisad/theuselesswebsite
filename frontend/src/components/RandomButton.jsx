@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { Compass, Loader2 } from 'lucide-react';
 import { getRandomWebsite } from '../services/api';
@@ -7,6 +7,23 @@ const RandomButton = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const controls = useAnimation();
+
+  // Reset state and styles when navigating back via browser history (bfcache)
+  useEffect(() => {
+    const handlePageShow = (event) => {
+      if (event.persisted) {
+        setIsLoading(false);
+        document.body.style.transition = '';
+        document.body.style.filter = '';
+        document.body.style.transform = '';
+        controls.stop();
+        controls.set({ scale: 1, opacity: 0.8 });
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, [controls]);
 
   const handleClick = async () => {
     try {
