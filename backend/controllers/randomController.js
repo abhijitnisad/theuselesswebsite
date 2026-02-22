@@ -12,7 +12,13 @@ const uselessWebsites = [
     "http://corndog.io",
     "http://www.republiquedesmangues.fr",
     "https://longdogechallenge.com",
-    "http://papertoilet.com/"
+    "http://papertoilet.com/",
+    "http://eelslap.com/",
+    "http://endless.horse/",
+    "https://jacksonpollock.org/",
+    "http://tinytuba.com/",
+    "https://checkboxrace.com/",
+    "http://www.donothingfor2minutes.com/"
 ];
 
 // @desc    Get a random useless website
