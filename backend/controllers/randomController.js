@@ -18,7 +18,17 @@ const uselessWebsites = [
     "https://jacksonpollock.org/",
     "http://tinytuba.com/",
     "https://checkboxrace.com/",
-    "http://www.donothingfor2minutes.com/"
+    "http://www.donothingfor2minutes.com/",
+    "https://findtheinvisiblecow.com/",
+    "https://hackertyper.com/",
+    "https://zoomquilt.org/",
+    "https://www.trashloop.com/",
+    "https://onesquareminesweeper.com/",
+    "http://heeeeeeeey.com/",
+    "http://corndogoncorndog.com/",
+    "https://www.everydayim.com/",
+    "http://www.fallingfalling.com/",
+    "https://trypap.com/"
 ];
 
 // @desc    Get a random useless website
