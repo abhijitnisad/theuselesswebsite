@@ -28,7 +28,27 @@ const uselessWebsites = [
     "http://corndogoncorndog.com/",
     "https://www.everydayim.com/",
     "http://www.fallingfalling.com/",
-    "https://trypap.com/"
+    "https://trypap.com/",
+    "https://chrismckenzie.com/",
+    "https://crouton.net/",
+    "http://ouaismaisbon.ch/",
+    "http://ninjaflex.com/",
+    "http://ihasabucket.com/",
+    "http://www.ismycomputeron.com/",
+    "http://www.nullingthevoid.com/",
+    "http://www.muchbetterthanthis.com/",
+    "http://www.yesnoif.com/",
+    "http://iamawesome.com/",
+    "http://www.blankwindows.com/",
+    "http://dogs.are.the.most.moe/",
+    "http://tencents.info/",
+    "http://www.patience-is-a-virtue.org/",
+    "http://whitetrash.nl/",
+    "http://www.theendofreason.com/",
+    "http://oct82.com/",
+    "http://burymewithmymoney.com/",
+    "http://movenowthinklater.com/",
+    "http://www.partridgegetslucky.com/"
 ];
 
 // @desc    Get a random useless website
